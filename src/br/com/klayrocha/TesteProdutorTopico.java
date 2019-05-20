@@ -8,6 +8,9 @@ import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.naming.InitialContext;
 
+import br.com.klayrocha.modelo.Pedido;
+import br.com.klayrocha.modelo.PedidoFactory;
+
 public class TesteProdutorTopico {
 
 	public static void main(String[] args) throws Exception {
@@ -23,8 +26,17 @@ public class TesteProdutorTopico {
 		
 		MessageProducer producer = session.createProducer(topico);
 		
-		Message message = session.createTextMessage("<pedido><id>333</id></pedido>");
-		//message.setBooleanProperty("ebook",true);
+		Pedido pedido = new PedidoFactory().geraPedidoComValores();
+		
+		/*StringWriter writer = new StringWriter();
+		JAXB.marshal(pedido,writer);
+		String xml = writer.toString();
+		
+		Message message = session.createTextMessage(xml);*/
+		
+		Message message = session.createObjectMessage(pedido);
+		
+		message.setBooleanProperty("ebook",true);
 		producer.send(message);
 		
 		session.close();

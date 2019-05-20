@@ -22,10 +22,13 @@ public class TesteProdutorFila {
 		Destination fila = (Destination) context.lookup("financeiro");
 		
 		MessageProducer producer = session.createProducer(fila);
-		for (int i = 1; i < 2000; i++) {
+		
+		Message message = session.createTextMessage("<pedido><id>1313</id></pedido>");
+		producer.send(message);
+		/*for (int i = 1; i < 2000; i++) {
 			Message message = session.createTextMessage("<pedido><id>"+i+"</id></pedido>");
 			producer.send(message);
-		}
+		}*/
 		//new Scanner(System.in).nextLine();
 		
 		session.close();
